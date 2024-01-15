@@ -21,7 +21,8 @@ using namespace std;
 ws		[ \t\r]+
 comment		"//".*\n
 line		[\n]
-id		[A-Za-z]([A-Za-z0-9])*
+id		[A-Za-z]([A-Za-z0-9]|(_[A-Za-z0-9])|(__[A-Za-z0-9]))*([A-Za-z0-9]+)?
+float   [0-9]*\.[0-9]+([eE][+-]?[0-9]+)?
 digit		[0-9]
 dec		{digit}+
 char		'.'
@@ -31,40 +32,24 @@ punc		[\(\),:;]
 {ws}		{ ECHO; }
 {comment}	{ ECHO; nextLine(); }
 {line}		{ ECHO; nextLine(); }
-
-"|"        { ECHO; return(OROP); }
-"!"        { ECHO; return(NOTOP); }
+"--".*\n   { ECHO; nextLine(); }	
+"+"		{ ECHO; return(ADDOP); }
 "-"        { ECHO; return(ADDOP); }
 "/"        { ECHO; return(MULOP); }
 "%"        { ECHO; return(REMOP); }
 "^"        { ECHO; return(EXPOP); }
 "~"        { ECHO; return(NEGOP); }
-"+"		{ ECHO; return(ADDOP); }
 "*"		{ ECHO; return(MULOP); }
 "&"		{ ECHO; return(ANDOP); }
 "<"		{ ECHO; return(RELOP); }
 "=>"		{ ECHO; return(ARROW); }
+"|"        { ECHO; return(OROP); }
+"!"        { ECHO; return(NOTOP); }
 "="        { ECHO; return(RELOP); }
 "<>"       { ECHO; return(RELOP); }
 ">"        { ECHO; return(RELOP); }
 ">="       { ECHO; return(RELOP); }
 "<="       { ECHO; return(RELOP); }
-"--".*\n   { ECHO; nextLine(); }		\\ Check 
-
-/* Identifiers */
-[A-Za-z]([A-Za-z0-9]|_[A-Za-z0-9])*(?!__)[A-Za-z0-9]* { ECHO; return(IDENTIFIER); }
-
-/* Hexadecimal Integers */
-"#[0-9A-Fa-f]+" { ECHO; return(HEX_LITERAL); }
-
-/* Decimal Numbers with Exponents */
-[0-9]*\.[0-9]+([eE][+-]?[0-9]+)? { ECHO; return(DECIMAL_LITERAL); }
-
-/* Character Literals */
-'\\[btnvfr]' | '.' { ECHO; return(CHAR_LITERAL); }
-
-
-/* Reserved Words */
 else       { ECHO; return(ELSE); }
 elsif      { ECHO; return(ELSIF); }
 endfold    { ECHO; return(ENDFOLD); }
@@ -90,13 +75,18 @@ returns		{ ECHO; return(RETURNS); }
 switch		{ ECHO; return(SWITCH); }
 when		{ ECHO; return(WHEN); }
 
-
 {id}		{ ECHO; return(IDENTIFIER);}
 {dec}		{ ECHO; return(INT_LITERAL); }
 {char}		{ ECHO; return(CHAR_LITERAL); }
 {punc}		{ ECHO; return(yytext[0]); }
 .		{ ECHO; appendError(LEXICAL, yytext); }
+"#[0-9A-Fa-f]+" { ECHO; return(HEX_LITERAL); }
+'\\[btnf]'  { ECHO; return(CHAR_LITERAL); }
+
+
 %%
+
+
 
 int main() {
 	firstLine();
