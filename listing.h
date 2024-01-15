@@ -1,5 +1,5 @@
 // CMSC 430 Compiler Theory and Design
-// Project 2 Skeleton
+// Project 1 Skeleton
 // UMGC CITE
 // Summer 2023
 

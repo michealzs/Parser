@@ -1,23 +1,24 @@
-// CMSC 430 Compiler Theory and Design
-// Project 2 Skeleton
-// UMGC CITE
-// Summer 2023
 
-// This file contains the bodies of the functions that produces the 
-// compilation listing
 
 #include <cstdio>
 #include <string>
-
+#include <queue>
+#include <array>
 using namespace std;
 
 #include "listing.h"
 
 static int lineNumber;
-static string error = "";
+
+//static string error = ""; 
+
 static int totalErrors = 0;
 
-static void displayErrors();
+static array<int, 3> errorCounts = {0, 0, 0}; // {lexical, syntactic, semantic}
+static queue<string> errorMessages;
+
+
+//static void displayErrors(); 
 
 void firstLine()
 {
@@ -37,6 +38,15 @@ int lastLine()
 	printf("\r");
 	displayErrors();
 	printf("     \n");
+
+	if (totalErrors > 0) {
+        printf("Total Errors: %d\n", totalErrors);
+        printf("Lexical Errors: %d, Syntactic Errors: %d, Semantic Errors: %d\n",
+               errorCounts[0], errorCounts[1], errorCounts[2]);
+    } else {
+        printf("Compiled Successfully\n");
+    }
+
 	return totalErrors;
 }
     
@@ -46,13 +56,22 @@ void appendError(ErrorCategories errorCategory, string message)
 		"Semantic Error, ", "Semantic Error, Duplicate ",
 		"Semantic Error, Undeclared " };
 
-	error = messages[errorCategory] + message;
+	errorMessages.push(messages[errorCategory] + message);
 	totalErrors++;
+	errorCounts[errorCategory]++;
+	//error = messages[errorCategory] + message;
+	
 }
 
 void displayErrors()
 {
+	while (!errorMessages.empty()) {
+    	printf("%s\n", errorMessages.front().c_str());
+        errorMessages.pop();
+    }
+	/*
 	if (error != "")
 		printf("%s\n", error.c_str());
 	error = "";
+	*/
 }
