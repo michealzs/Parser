@@ -51,10 +51,14 @@ type:
 	REAL |
 	CHARACTER ; 
 
-optional_variable :
-	variable |
-	%empty ;
-    
+optional_variable:
+    variables |
+    %empty ;
+
+variables:
+    variable variables |
+    %empty ;
+
 variable:	
 	IDENTIFIER ':' type IS statement ';' |
 	IDENTIFIER ':' LIST OF type IS list ';' ;
@@ -76,7 +80,7 @@ statement_:
 statement:
 	expression |
 	WHEN condition ',' expression ':' expression |
-	SWITCH expression IS cases OTHERS ARROW statement ';' ENDSWITCH | if_statement ;
+	SWITCH expression IS cases OTHERS ARROW statement ';' ENDSWITCH | if_statement | fold_statement;
 
 if_statement:
     IF condition THEN statement_ elsif_clauses ENDIF |
@@ -85,6 +89,20 @@ if_statement:
 elsif_clauses:
     %empty |  
     ELSIF condition THEN statement_ elsif_clauses ;
+
+fold_statement:
+    FOLD direction operator list_choice ENDFOLD ;
+
+direction:
+    LEFT | RIGHT ;
+
+operator:
+    ADDOP | MULOP ; 
+
+list_choice:
+    list | IDENTIFIER ;
+
+
 
 cases:
 	cases case |
