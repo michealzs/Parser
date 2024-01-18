@@ -32,7 +32,7 @@ function:
 	function_header optional_variable body ;
 
 function_header:	
-	FUNCTION IDENTIFIER optional_parameters RETURNS type ';'  ;
+	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' ;
 
 parameters:
     parameter more_parameters ;
