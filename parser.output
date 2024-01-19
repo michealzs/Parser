@@ -1,0 +1,1733 @@
+Terminals unused in grammar
+
+    HEX_LITERAL
+    REMOP
+
+
+State 4 conflicts: 1 reduce/reduce
+State 17 conflicts: 2 reduce/reduce
+State 48 conflicts: 1 reduce/reduce
+State 56 conflicts: 4 shift/reduce
+State 79 conflicts: 1 shift/reduce
+State 80 conflicts: 1 shift/reduce
+State 94 conflicts: 4 shift/reduce
+State 102 conflicts: 2 shift/reduce
+
+
+Grammar
+
+    0 $accept: function $end
+
+    1 function: function_header optional_variable body
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type ';'
+    3                | error ';'
+
+    4 parameters: parameter more_parameters
+
+    5 more_parameters: ',' parameter more_parameters
+    6                | ε
+
+    7 parameter: IDENTIFIER ':' type
+
+    8 optional_parameters: parameters
+    9                    | ε
+
+   10 type: INTEGER
+   11     | REAL
+   12     | CHARACTER
+
+   13 optional_variable: variables
+   14                  | ε
+   15                  | error ';'
+
+   16 variables: variable variables
+   17          | ε
+   18          | error ';'
+
+   19 variable: IDENTIFIER ':' type IS statement ';'
+   20         | IDENTIFIER ':' LIST OF type IS list ';'
+   21         | error ';'
+
+   22 list: '(' expressions ')'
+
+   23 expressions: expressions ',' expression
+   24            | expression
+
+   25 body: BEGIN_ statement_ END ';'
+
+   26 statement_: statement ';'
+   27           | error ';'
+
+   28 statement: expression
+   29          | WHEN condition ',' expression ':' expression
+   30          | SWITCH expression IS cases OTHERS ARROW statement ';' ENDSWITCH
+   31          | if_statement
+   32          | fold_statement
+
+   33 if_statement: IF condition THEN statement_ elsif_clauses ENDIF
+   34             | IF condition THEN statement_ elsif_clauses ELSE statement_ ENDIF
+
+   35 elsif_clauses: ε
+   36              | ELSIF condition THEN statement_ elsif_clauses
+
+   37 fold_statement: FOLD direction operator list_choice ENDFOLD
+
+   38 direction: LEFT
+   39          | RIGHT
+
+   40 operator: ADDOP
+   41         | MULOP
+
+   42 list_choice: list
+   43            | IDENTIFIER
+
+   44 cases: cases case
+   45      | ε
+   46      | error ';'
+
+   47 case: CASE INT_LITERAL ARROW statement ';'
+   48     | error ';'
+
+   49 condition: expression RELOP expression
+   50          | condition logical_operator condition
+   51          | '(' condition ')'
+   52          | NOTOP condition
+
+   53 logical_operator: ANDOP
+   54                 | OROP
+
+   55 expression: '(' expression ')'
+   56           | expression arithmetic_operator expression
+   57           | NEGOP expression
+   58           | INT_LITERAL
+   59           | CHAR_LITERAL
+   60           | REAL_LITERAL
+   61           | IDENTIFIER '(' expression ')'
+   62           | IDENTIFIER
+
+   63 arithmetic_operator: ADDOP
+   64                    | MULOP
+   65                    | MODOP
+   66                    | EXPOP
+
+
+Terminals, with rules where they appear
+
+    $end (0) 0
+    '(' (40) 22 51 55 61
+    ')' (41) 22 51 55 61
+    ',' (44) 5 23 29
+    ':' (58) 7 19 20 29
+    ';' (59) 2 3 15 18 19 20 21 25 26 27 30 46 47 48
+    error (256) 3 15 18 21 27 46 48
+    IDENTIFIER (258) 2 7 19 20 43 61 62
+    INT_LITERAL (259) 47 58
+    CHAR_LITERAL (260) 59
+    REAL_LITERAL (261) 60
+    HEX_LITERAL (262)
+    ADDOP (263) 40 63
+    MULOP (264) 41 64
+    ANDOP (265) 53
+    RELOP (266) 49
+    ARROW (267) 30 47
+    MODOP (268) 65
+    EXPOP (269) 66
+    OROP (270) 54
+    NOTOP (271) 52
+    REMOP (272)
+    NEGOP (273) 57
+    BEGIN_ (274) 25
+    CASE (275) 47
+    CHARACTER (276) 12
+    ELSE (277) 34
+    END (278) 25
+    ENDSWITCH (279) 30
+    FUNCTION (280) 2
+    INTEGER (281) 10
+    IS (282) 19 20 30
+    LIST (283) 20
+    OF (284) 20
+    OTHERS (285) 30
+    RETURNS (286) 2
+    SWITCH (287) 30
+    WHEN (288) 29
+    REAL (289) 11
+    IF (290) 33 34
+    THEN (291) 33 34 36
+    ELSIF (292) 36
+    ENDIF (293) 33 34
+    FOLD (294) 37
+    ENDFOLD (295) 37
+    LEFT (296) 38
+    RIGHT (297) 39
+
+
+Nonterminals, with rules where they appear
+
+    $accept (48)
+        on left: 0
+    function (49)
+        on left: 1
+        on right: 0
+    function_header (50)
+        on left: 2 3
+        on right: 1
+    parameters (51)
+        on left: 4
+        on right: 8
+    more_parameters (52)
+        on left: 5 6
+        on right: 4 5
+    parameter (53)
+        on left: 7
+        on right: 4 5
+    optional_parameters (54)
+        on left: 8 9
+        on right: 2
+    type (55)
+        on left: 10 11 12
+        on right: 2 7 19 20
+    optional_variable (56)
+        on left: 13 14 15
+        on right: 1
+    variables (57)
+        on left: 16 17 18
+        on right: 13 16
+    variable (58)
+        on left: 19 20 21
+        on right: 16
+    list (59)
+        on left: 22
+        on right: 20 42
+    expressions (60)
+        on left: 23 24
+        on right: 22 23
+    body (61)
+        on left: 25
+        on right: 1
+    statement_ (62)
+        on left: 26 27
+        on right: 25 33 34 36
+    statement (63)
+        on left: 28 29 30 31 32
+        on right: 19 26 30 47
+    if_statement (64)
+        on left: 33 34
+        on right: 31
+    elsif_clauses (65)
+        on left: 35 36
+        on right: 33 34 36
+    fold_statement (66)
+        on left: 37
+        on right: 32
+    direction (67)
+        on left: 38 39
+        on right: 37
+    operator (68)
+        on left: 40 41
+        on right: 37
+    list_choice (69)
+        on left: 42 43
+        on right: 37
+    cases (70)
+        on left: 44 45 46
+        on right: 30 44
+    case (71)
+        on left: 47 48
+        on right: 44
+    condition (72)
+        on left: 49 50 51 52
+        on right: 29 33 34 36 50 51 52
+    logical_operator (73)
+        on left: 53 54
+        on right: 50
+    expression (74)
+        on left: 55 56 57 58 59 60 61 62
+        on right: 23 24 28 29 30 49 55 56 57 61
+    arithmetic_operator (75)
+        on left: 63 64 65 66
+        on right: 56
+
+
+State 0
+
+    0 $accept: • function $end
+
+    error     shift, and go to state 1
+    FUNCTION  shift, and go to state 2
+
+    function         go to state 3
+    function_header  go to state 4
+
+
+State 1
+
+    3 function_header: error • ';'
+
+    ';'  shift, and go to state 5
+
+
+State 2
+
+    2 function_header: FUNCTION • IDENTIFIER optional_parameters RETURNS type ';'
+
+    IDENTIFIER  shift, and go to state 6
+
+
+State 3
+
+    0 $accept: function • $end
+
+    $end  shift, and go to state 7
+
+
+State 4
+
+    1 function: function_header • optional_variable body
+
+    error       shift, and go to state 8
+    IDENTIFIER  shift, and go to state 9
+
+    BEGIN_  reduce using rule 14 (optional_variable)
+    BEGIN_  [reduce using rule 17 (variables)]
+
+    optional_variable  go to state 10
+    variables          go to state 11
+    variable           go to state 12
+
+
+State 5
+
+    3 function_header: error ';' •
+
+    $default  reduce using rule 3 (function_header)
+
+
+State 6
+
+    2 function_header: FUNCTION IDENTIFIER • optional_parameters RETURNS type ';'
+
+    IDENTIFIER  shift, and go to state 13
+
+    $default  reduce using rule 9 (optional_parameters)
+
+    parameters           go to state 14
+    parameter            go to state 15
+    optional_parameters  go to state 16
+
+
+State 7
+
+    0 $accept: function $end •
+
+    $default  accept
+
+
+State 8
+
+   15 optional_variable: error • ';'
+   18 variables: error • ';'
+   21 variable: error • ';'
+
+    ';'  shift, and go to state 17
+
+
+State 9
+
+   19 variable: IDENTIFIER • ':' type IS statement ';'
+   20         | IDENTIFIER • ':' LIST OF type IS list ';'
+
+    ':'  shift, and go to state 18
+
+
+State 10
+
+    1 function: function_header optional_variable • body
+
+    BEGIN_  shift, and go to state 19
+
+    body  go to state 20
+
+
+State 11
+
+   13 optional_variable: variables •
+
+    $default  reduce using rule 13 (optional_variable)
+
+
+State 12
+
+   16 variables: variable • variables
+
+    error       shift, and go to state 21
+    IDENTIFIER  shift, and go to state 9
+
+    BEGIN_  reduce using rule 17 (variables)
+
+    variables  go to state 22
+    variable   go to state 12
+
+
+State 13
+
+    7 parameter: IDENTIFIER • ':' type
+
+    ':'  shift, and go to state 23
+
+
+State 14
+
+    8 optional_parameters: parameters •
+
+    $default  reduce using rule 8 (optional_parameters)
+
+
+State 15
+
+    4 parameters: parameter • more_parameters
+
+    ','  shift, and go to state 24
+
+    $default  reduce using rule 6 (more_parameters)
+
+    more_parameters  go to state 25
+
+
+State 16
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters • RETURNS type ';'
+
+    RETURNS  shift, and go to state 26
+
+
+State 17
+
+   15 optional_variable: error ';' •
+   18 variables: error ';' •
+   21 variable: error ';' •
+
+    BEGIN_    reduce using rule 15 (optional_variable)
+    BEGIN_    [reduce using rule 18 (variables)]
+    BEGIN_    [reduce using rule 21 (variable)]
+    $default  reduce using rule 21 (variable)
+
+
+State 18
+
+   19 variable: IDENTIFIER ':' • type IS statement ';'
+   20         | IDENTIFIER ':' • LIST OF type IS list ';'
+
+    CHARACTER  shift, and go to state 27
+    INTEGER    shift, and go to state 28
+    LIST       shift, and go to state 29
+    REAL       shift, and go to state 30
+
+    type  go to state 31
+
+
+State 19
+
+   25 body: BEGIN_ • statement_ END ';'
+
+    error         shift, and go to state 32
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement_      go to state 43
+    statement       go to state 44
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 20
+
+    1 function: function_header optional_variable body •
+
+    $default  reduce using rule 1 (function)
+
+
+State 21
+
+   18 variables: error • ';'
+   21 variable: error • ';'
+
+    ';'  shift, and go to state 48
+
+
+State 22
+
+   16 variables: variable variables •
+
+    $default  reduce using rule 16 (variables)
+
+
+State 23
+
+    7 parameter: IDENTIFIER ':' • type
+
+    CHARACTER  shift, and go to state 27
+    INTEGER    shift, and go to state 28
+    REAL       shift, and go to state 30
+
+    type  go to state 49
+
+
+State 24
+
+    5 more_parameters: ',' • parameter more_parameters
+
+    IDENTIFIER  shift, and go to state 13
+
+    parameter  go to state 50
+
+
+State 25
+
+    4 parameters: parameter more_parameters •
+
+    $default  reduce using rule 4 (parameters)
+
+
+State 26
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS • type ';'
+
+    CHARACTER  shift, and go to state 27
+    INTEGER    shift, and go to state 28
+    REAL       shift, and go to state 30
+
+    type  go to state 51
+
+
+State 27
+
+   12 type: CHARACTER •
+
+    $default  reduce using rule 12 (type)
+
+
+State 28
+
+   10 type: INTEGER •
+
+    $default  reduce using rule 10 (type)
+
+
+State 29
+
+   20 variable: IDENTIFIER ':' LIST • OF type IS list ';'
+
+    OF  shift, and go to state 52
+
+
+State 30
+
+   11 type: REAL •
+
+    $default  reduce using rule 11 (type)
+
+
+State 31
+
+   19 variable: IDENTIFIER ':' type • IS statement ';'
+
+    IS  shift, and go to state 53
+
+
+State 32
+
+   27 statement_: error • ';'
+
+    ';'  shift, and go to state 54
+
+
+State 33
+
+   61 expression: IDENTIFIER • '(' expression ')'
+   62           | IDENTIFIER •
+
+    '('  shift, and go to state 55
+
+    $default  reduce using rule 62 (expression)
+
+
+State 34
+
+   58 expression: INT_LITERAL •
+
+    $default  reduce using rule 58 (expression)
+
+
+State 35
+
+   59 expression: CHAR_LITERAL •
+
+    $default  reduce using rule 59 (expression)
+
+
+State 36
+
+   60 expression: REAL_LITERAL •
+
+    $default  reduce using rule 60 (expression)
+
+
+State 37
+
+   57 expression: NEGOP • expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 56
+
+
+State 38
+
+   30 statement: SWITCH • expression IS cases OTHERS ARROW statement ';' ENDSWITCH
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 57
+
+
+State 39
+
+   29 statement: WHEN • condition ',' expression ':' expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 60
+    expression  go to state 61
+
+
+State 40
+
+   33 if_statement: IF • condition THEN statement_ elsif_clauses ENDIF
+   34             | IF • condition THEN statement_ elsif_clauses ELSE statement_ ENDIF
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 62
+    expression  go to state 61
+
+
+State 41
+
+   37 fold_statement: FOLD • direction operator list_choice ENDFOLD
+
+    LEFT   shift, and go to state 63
+    RIGHT  shift, and go to state 64
+
+    direction  go to state 65
+
+
+State 42
+
+   55 expression: '(' • expression ')'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 66
+
+
+State 43
+
+   25 body: BEGIN_ statement_ • END ';'
+
+    END  shift, and go to state 67
+
+
+State 44
+
+   26 statement_: statement • ';'
+
+    ';'  shift, and go to state 68
+
+
+State 45
+
+   31 statement: if_statement •
+
+    $default  reduce using rule 31 (statement)
+
+
+State 46
+
+   32 statement: fold_statement •
+
+    $default  reduce using rule 32 (statement)
+
+
+State 47
+
+   28 statement: expression •
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    $default  reduce using rule 28 (statement)
+
+    arithmetic_operator  go to state 73
+
+
+State 48
+
+   18 variables: error ';' •
+   21 variable: error ';' •
+
+    BEGIN_    reduce using rule 18 (variables)
+    BEGIN_    [reduce using rule 21 (variable)]
+    $default  reduce using rule 21 (variable)
+
+
+State 49
+
+    7 parameter: IDENTIFIER ':' type •
+
+    $default  reduce using rule 7 (parameter)
+
+
+State 50
+
+    5 more_parameters: ',' parameter • more_parameters
+
+    ','  shift, and go to state 24
+
+    $default  reduce using rule 6 (more_parameters)
+
+    more_parameters  go to state 74
+
+
+State 51
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type • ';'
+
+    ';'  shift, and go to state 75
+
+
+State 52
+
+   20 variable: IDENTIFIER ':' LIST OF • type IS list ';'
+
+    CHARACTER  shift, and go to state 27
+    INTEGER    shift, and go to state 28
+    REAL       shift, and go to state 30
+
+    type  go to state 76
+
+
+State 53
+
+   19 variable: IDENTIFIER ':' type IS • statement ';'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement       go to state 77
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 54
+
+   27 statement_: error ';' •
+
+    $default  reduce using rule 27 (statement_)
+
+
+State 55
+
+   61 expression: IDENTIFIER '(' • expression ')'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 78
+
+
+State 56
+
+   56 expression: expression • arithmetic_operator expression
+   57           | NEGOP expression •
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    ADDOP     [reduce using rule 57 (expression)]
+    MULOP     [reduce using rule 57 (expression)]
+    MODOP     [reduce using rule 57 (expression)]
+    EXPOP     [reduce using rule 57 (expression)]
+    $default  reduce using rule 57 (expression)
+
+    arithmetic_operator  go to state 73
+
+
+State 57
+
+   30 statement: SWITCH expression • IS cases OTHERS ARROW statement ';' ENDSWITCH
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+    IS     shift, and go to state 79
+
+    arithmetic_operator  go to state 73
+
+
+State 58
+
+   52 condition: NOTOP • condition
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 80
+    expression  go to state 61
+
+
+State 59
+
+   51 condition: '(' • condition ')'
+   55 expression: '(' • expression ')'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 81
+    expression  go to state 82
+
+
+State 60
+
+   29 statement: WHEN condition • ',' expression ':' expression
+   50 condition: condition • logical_operator condition
+
+    ANDOP  shift, and go to state 83
+    OROP   shift, and go to state 84
+    ','    shift, and go to state 85
+
+    logical_operator  go to state 86
+
+
+State 61
+
+   49 condition: expression • RELOP expression
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    RELOP  shift, and go to state 87
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    arithmetic_operator  go to state 73
+
+
+State 62
+
+   33 if_statement: IF condition • THEN statement_ elsif_clauses ENDIF
+   34             | IF condition • THEN statement_ elsif_clauses ELSE statement_ ENDIF
+   50 condition: condition • logical_operator condition
+
+    ANDOP  shift, and go to state 83
+    OROP   shift, and go to state 84
+    THEN   shift, and go to state 88
+
+    logical_operator  go to state 86
+
+
+State 63
+
+   38 direction: LEFT •
+
+    $default  reduce using rule 38 (direction)
+
+
+State 64
+
+   39 direction: RIGHT •
+
+    $default  reduce using rule 39 (direction)
+
+
+State 65
+
+   37 fold_statement: FOLD direction • operator list_choice ENDFOLD
+
+    ADDOP  shift, and go to state 89
+    MULOP  shift, and go to state 90
+
+    operator  go to state 91
+
+
+State 66
+
+   55 expression: '(' expression • ')'
+   56           | expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+    ')'    shift, and go to state 92
+
+    arithmetic_operator  go to state 73
+
+
+State 67
+
+   25 body: BEGIN_ statement_ END • ';'
+
+    ';'  shift, and go to state 93
+
+
+State 68
+
+   26 statement_: statement ';' •
+
+    $default  reduce using rule 26 (statement_)
+
+
+State 69
+
+   63 arithmetic_operator: ADDOP •
+
+    $default  reduce using rule 63 (arithmetic_operator)
+
+
+State 70
+
+   64 arithmetic_operator: MULOP •
+
+    $default  reduce using rule 64 (arithmetic_operator)
+
+
+State 71
+
+   65 arithmetic_operator: MODOP •
+
+    $default  reduce using rule 65 (arithmetic_operator)
+
+
+State 72
+
+   66 arithmetic_operator: EXPOP •
+
+    $default  reduce using rule 66 (arithmetic_operator)
+
+
+State 73
+
+   56 expression: expression arithmetic_operator • expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 94
+
+
+State 74
+
+    5 more_parameters: ',' parameter more_parameters •
+
+    $default  reduce using rule 5 (more_parameters)
+
+
+State 75
+
+    2 function_header: FUNCTION IDENTIFIER optional_parameters RETURNS type ';' •
+
+    $default  reduce using rule 2 (function_header)
+
+
+State 76
+
+   20 variable: IDENTIFIER ':' LIST OF type • IS list ';'
+
+    IS  shift, and go to state 95
+
+
+State 77
+
+   19 variable: IDENTIFIER ':' type IS statement • ';'
+
+    ';'  shift, and go to state 96
+
+
+State 78
+
+   56 expression: expression • arithmetic_operator expression
+   61           | IDENTIFIER '(' expression • ')'
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+    ')'    shift, and go to state 97
+
+    arithmetic_operator  go to state 73
+
+
+State 79
+
+   30 statement: SWITCH expression IS • cases OTHERS ARROW statement ';' ENDSWITCH
+
+    error  shift, and go to state 98
+
+    error   [reduce using rule 45 (cases)]
+    CASE    reduce using rule 45 (cases)
+    OTHERS  reduce using rule 45 (cases)
+
+    cases  go to state 99
+
+
+State 80
+
+   50 condition: condition • logical_operator condition
+   52          | NOTOP condition •
+
+    ANDOP  shift, and go to state 83
+
+    ANDOP     [reduce using rule 52 (condition)]
+    $default  reduce using rule 52 (condition)
+
+    logical_operator  go to state 86
+
+
+State 81
+
+   50 condition: condition • logical_operator condition
+   51          | '(' condition • ')'
+
+    ANDOP  shift, and go to state 83
+    OROP   shift, and go to state 84
+    ')'    shift, and go to state 100
+
+    logical_operator  go to state 86
+
+
+State 82
+
+   49 condition: expression • RELOP expression
+   55 expression: '(' expression • ')'
+   56           | expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    RELOP  shift, and go to state 87
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+    ')'    shift, and go to state 92
+
+    arithmetic_operator  go to state 73
+
+
+State 83
+
+   53 logical_operator: ANDOP •
+
+    $default  reduce using rule 53 (logical_operator)
+
+
+State 84
+
+   54 logical_operator: OROP •
+
+    $default  reduce using rule 54 (logical_operator)
+
+
+State 85
+
+   29 statement: WHEN condition ',' • expression ':' expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 101
+
+
+State 86
+
+   50 condition: condition logical_operator • condition
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 102
+    expression  go to state 61
+
+
+State 87
+
+   49 condition: expression RELOP • expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 103
+
+
+State 88
+
+   33 if_statement: IF condition THEN • statement_ elsif_clauses ENDIF
+   34             | IF condition THEN • statement_ elsif_clauses ELSE statement_ ENDIF
+
+    error         shift, and go to state 32
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement_      go to state 104
+    statement       go to state 44
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 89
+
+   40 operator: ADDOP •
+
+    $default  reduce using rule 40 (operator)
+
+
+State 90
+
+   41 operator: MULOP •
+
+    $default  reduce using rule 41 (operator)
+
+
+State 91
+
+   37 fold_statement: FOLD direction operator • list_choice ENDFOLD
+
+    IDENTIFIER  shift, and go to state 105
+    '('         shift, and go to state 106
+
+    list         go to state 107
+    list_choice  go to state 108
+
+
+State 92
+
+   55 expression: '(' expression ')' •
+
+    $default  reduce using rule 55 (expression)
+
+
+State 93
+
+   25 body: BEGIN_ statement_ END ';' •
+
+    $default  reduce using rule 25 (body)
+
+
+State 94
+
+   56 expression: expression • arithmetic_operator expression
+   56           | expression arithmetic_operator expression •
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    ADDOP     [reduce using rule 56 (expression)]
+    MULOP     [reduce using rule 56 (expression)]
+    MODOP     [reduce using rule 56 (expression)]
+    EXPOP     [reduce using rule 56 (expression)]
+    $default  reduce using rule 56 (expression)
+
+    arithmetic_operator  go to state 73
+
+
+State 95
+
+   20 variable: IDENTIFIER ':' LIST OF type IS • list ';'
+
+    '('  shift, and go to state 106
+
+    list  go to state 109
+
+
+State 96
+
+   19 variable: IDENTIFIER ':' type IS statement ';' •
+
+    $default  reduce using rule 19 (variable)
+
+
+State 97
+
+   61 expression: IDENTIFIER '(' expression ')' •
+
+    $default  reduce using rule 61 (expression)
+
+
+State 98
+
+   46 cases: error • ';'
+
+    ';'  shift, and go to state 110
+
+
+State 99
+
+   30 statement: SWITCH expression IS cases • OTHERS ARROW statement ';' ENDSWITCH
+   44 cases: cases • case
+
+    error   shift, and go to state 111
+    CASE    shift, and go to state 112
+    OTHERS  shift, and go to state 113
+
+    case  go to state 114
+
+
+State 100
+
+   51 condition: '(' condition ')' •
+
+    $default  reduce using rule 51 (condition)
+
+
+State 101
+
+   29 statement: WHEN condition ',' expression • ':' expression
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+    ':'    shift, and go to state 115
+
+    arithmetic_operator  go to state 73
+
+
+State 102
+
+   50 condition: condition • logical_operator condition
+   50          | condition logical_operator condition •
+
+    ANDOP  shift, and go to state 83
+    OROP   shift, and go to state 84
+
+    ANDOP     [reduce using rule 50 (condition)]
+    OROP      [reduce using rule 50 (condition)]
+    $default  reduce using rule 50 (condition)
+
+    logical_operator  go to state 86
+
+
+State 103
+
+   49 condition: expression RELOP expression •
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    $default  reduce using rule 49 (condition)
+
+    arithmetic_operator  go to state 73
+
+
+State 104
+
+   33 if_statement: IF condition THEN statement_ • elsif_clauses ENDIF
+   34             | IF condition THEN statement_ • elsif_clauses ELSE statement_ ENDIF
+
+    ELSIF  shift, and go to state 116
+
+    $default  reduce using rule 35 (elsif_clauses)
+
+    elsif_clauses  go to state 117
+
+
+State 105
+
+   43 list_choice: IDENTIFIER •
+
+    $default  reduce using rule 43 (list_choice)
+
+
+State 106
+
+   22 list: '(' • expressions ')'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expressions  go to state 118
+    expression   go to state 119
+
+
+State 107
+
+   42 list_choice: list •
+
+    $default  reduce using rule 42 (list_choice)
+
+
+State 108
+
+   37 fold_statement: FOLD direction operator list_choice • ENDFOLD
+
+    ENDFOLD  shift, and go to state 120
+
+
+State 109
+
+   20 variable: IDENTIFIER ':' LIST OF type IS list • ';'
+
+    ';'  shift, and go to state 121
+
+
+State 110
+
+   46 cases: error ';' •
+
+    $default  reduce using rule 46 (cases)
+
+
+State 111
+
+   48 case: error • ';'
+
+    ';'  shift, and go to state 122
+
+
+State 112
+
+   47 case: CASE • INT_LITERAL ARROW statement ';'
+
+    INT_LITERAL  shift, and go to state 123
+
+
+State 113
+
+   30 statement: SWITCH expression IS cases OTHERS • ARROW statement ';' ENDSWITCH
+
+    ARROW  shift, and go to state 124
+
+
+State 114
+
+   44 cases: cases case •
+
+    $default  reduce using rule 44 (cases)
+
+
+State 115
+
+   29 statement: WHEN condition ',' expression ':' • expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 125
+
+
+State 116
+
+   36 elsif_clauses: ELSIF • condition THEN statement_ elsif_clauses
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NOTOP         shift, and go to state 58
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 59
+
+    condition   go to state 126
+    expression  go to state 61
+
+
+State 117
+
+   33 if_statement: IF condition THEN statement_ elsif_clauses • ENDIF
+   34             | IF condition THEN statement_ elsif_clauses • ELSE statement_ ENDIF
+
+    ELSE   shift, and go to state 127
+    ENDIF  shift, and go to state 128
+
+
+State 118
+
+   22 list: '(' expressions • ')'
+   23 expressions: expressions • ',' expression
+
+    ','  shift, and go to state 129
+    ')'  shift, and go to state 130
+
+
+State 119
+
+   24 expressions: expression •
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    $default  reduce using rule 24 (expressions)
+
+    arithmetic_operator  go to state 73
+
+
+State 120
+
+   37 fold_statement: FOLD direction operator list_choice ENDFOLD •
+
+    $default  reduce using rule 37 (fold_statement)
+
+
+State 121
+
+   20 variable: IDENTIFIER ':' LIST OF type IS list ';' •
+
+    $default  reduce using rule 20 (variable)
+
+
+State 122
+
+   48 case: error ';' •
+
+    $default  reduce using rule 48 (case)
+
+
+State 123
+
+   47 case: CASE INT_LITERAL • ARROW statement ';'
+
+    ARROW  shift, and go to state 131
+
+
+State 124
+
+   30 statement: SWITCH expression IS cases OTHERS ARROW • statement ';' ENDSWITCH
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement       go to state 132
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 125
+
+   29 statement: WHEN condition ',' expression ':' expression •
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    $default  reduce using rule 29 (statement)
+
+    arithmetic_operator  go to state 73
+
+
+State 126
+
+   36 elsif_clauses: ELSIF condition • THEN statement_ elsif_clauses
+   50 condition: condition • logical_operator condition
+
+    ANDOP  shift, and go to state 83
+    OROP   shift, and go to state 84
+    THEN   shift, and go to state 133
+
+    logical_operator  go to state 86
+
+
+State 127
+
+   34 if_statement: IF condition THEN statement_ elsif_clauses ELSE • statement_ ENDIF
+
+    error         shift, and go to state 32
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement_      go to state 134
+    statement       go to state 44
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 128
+
+   33 if_statement: IF condition THEN statement_ elsif_clauses ENDIF •
+
+    $default  reduce using rule 33 (if_statement)
+
+
+State 129
+
+   23 expressions: expressions ',' • expression
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    '('           shift, and go to state 42
+
+    expression  go to state 135
+
+
+State 130
+
+   22 list: '(' expressions ')' •
+
+    $default  reduce using rule 22 (list)
+
+
+State 131
+
+   47 case: CASE INT_LITERAL ARROW • statement ';'
+
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement       go to state 136
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 132
+
+   30 statement: SWITCH expression IS cases OTHERS ARROW statement • ';' ENDSWITCH
+
+    ';'  shift, and go to state 137
+
+
+State 133
+
+   36 elsif_clauses: ELSIF condition THEN • statement_ elsif_clauses
+
+    error         shift, and go to state 32
+    IDENTIFIER    shift, and go to state 33
+    INT_LITERAL   shift, and go to state 34
+    CHAR_LITERAL  shift, and go to state 35
+    REAL_LITERAL  shift, and go to state 36
+    NEGOP         shift, and go to state 37
+    SWITCH        shift, and go to state 38
+    WHEN          shift, and go to state 39
+    IF            shift, and go to state 40
+    FOLD          shift, and go to state 41
+    '('           shift, and go to state 42
+
+    statement_      go to state 138
+    statement       go to state 44
+    if_statement    go to state 45
+    fold_statement  go to state 46
+    expression      go to state 47
+
+
+State 134
+
+   34 if_statement: IF condition THEN statement_ elsif_clauses ELSE statement_ • ENDIF
+
+    ENDIF  shift, and go to state 139
+
+
+State 135
+
+   23 expressions: expressions ',' expression •
+   56 expression: expression • arithmetic_operator expression
+
+    ADDOP  shift, and go to state 69
+    MULOP  shift, and go to state 70
+    MODOP  shift, and go to state 71
+    EXPOP  shift, and go to state 72
+
+    $default  reduce using rule 23 (expressions)
+
+    arithmetic_operator  go to state 73
+
+
+State 136
+
+   47 case: CASE INT_LITERAL ARROW statement • ';'
+
+    ';'  shift, and go to state 140
+
+
+State 137
+
+   30 statement: SWITCH expression IS cases OTHERS ARROW statement ';' • ENDSWITCH
+
+    ENDSWITCH  shift, and go to state 141
+
+
+State 138
+
+   36 elsif_clauses: ELSIF condition THEN statement_ • elsif_clauses
+
+    ELSIF  shift, and go to state 116
+
+    $default  reduce using rule 35 (elsif_clauses)
+
+    elsif_clauses  go to state 142
+
+
+State 139
+
+   34 if_statement: IF condition THEN statement_ elsif_clauses ELSE statement_ ENDIF •
+
+    $default  reduce using rule 34 (if_statement)
+
+
+State 140
+
+   47 case: CASE INT_LITERAL ARROW statement ';' •
+
+    $default  reduce using rule 47 (case)
+
+
+State 141
+
+   30 statement: SWITCH expression IS cases OTHERS ARROW statement ';' ENDSWITCH •
+
+    $default  reduce using rule 30 (statement)
+
+
+State 142
+
+   36 elsif_clauses: ELSIF condition THEN statement_ elsif_clauses •
+
+    $default  reduce using rule 36 (elsif_clauses)

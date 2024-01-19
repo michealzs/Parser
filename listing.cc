@@ -47,9 +47,7 @@ int lastLine()
     {
         printf("Lexical Errors %d\n", lexicalErrors);
         printf("Syntax Errors %d\n", syntaxErrors);
-        printf("General Semantic Errors %d\n", generalSemanticErrors);
-        printf("Duplicate Identifier Errors %d\n", duplicateIdentifierErrors);
-        printf("Undeclared Identifier Errors %d\n", undeclaredIdentifierErrors);
+        printf("Semantic Errors %d\n", generalSemanticErrors);
     }
 
     return lineNumber;

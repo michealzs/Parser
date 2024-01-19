@@ -36,7 +36,7 @@ function:
 	function_header optional_variable body ;
 
 function_header:	
-	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' ;
+	FUNCTION IDENTIFIER optional_parameters RETURNS type ';' | error ';' ;
 
 parameters:
     parameter more_parameters ;
@@ -57,15 +57,18 @@ type:
 
 optional_variable:
     variables |
-    %empty ;
+    %empty | 
+    error ';';
 
 variables:
     variable variables |
-    %empty ;
+    %empty | 
+    error ';';
 
 variable:	
 	IDENTIFIER ':' type IS statement ';' |
-	IDENTIFIER ':' LIST OF type IS list ';' ;
+	IDENTIFIER ':' LIST OF type IS list ';' | 
+	error ';';
 
 list:
 	'(' expressions ')' ;
@@ -106,14 +109,14 @@ operator:
 list_choice:
     list | IDENTIFIER ;
 
-
-
 cases:
 	cases case |
-	%empty ;
+	%empty |
+	error ';';
 	
 case:
-	CASE INT_LITERAL ARROW statement ';' ; 
+	CASE INT_LITERAL ARROW statement ';' |
+	error ';'; 
 
 condition:
     expression RELOP expression |
