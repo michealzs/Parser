@@ -26,6 +26,10 @@ void yyerror(const char* message);
 
 %token BEGIN_ CASE CHARACTER ELSE END ENDSWITCH FUNCTION INTEGER IS LIST OF OTHERS RETURNS SWITCH WHEN REAL IF THEN ELSIF ENDIF FOLD ENDFOLD LEFT RIGHT
 
+%left OROP
+
+%right NOTOP
+
 %%
 
 function:	
@@ -112,28 +116,27 @@ case:
 	CASE INT_LITERAL ARROW statement ';' ; 
 
 condition:
-	condition ANDOP relation |
-	relation ;
+    expression RELOP expression |
+    condition logical_operator condition |
+    '(' condition ')' |
+    NOTOP condition ;
 
-relation:
-	'(' condition ')' |
-	expression RELOP expression ;
+logical_operator:
+    ANDOP | OROP;
 
 expression:
-	expression ADDOP term |
-	term ;
-      
-term:
-	term MULOP primary |
-	primary ;
+    '(' expression ')' |
+    expression arithmetic_operator expression |
+    NEGOP expression |
+    INT_LITERAL |
+    CHAR_LITERAL |
+    REAL_LITERAL |
+    IDENTIFIER '(' expression ')' |
+    IDENTIFIER ;
 
-primary:
-	'(' expression ')' |
-	INT_LITERAL |
-	CHAR_LITERAL |
-	REAL_LITERAL | 
-	IDENTIFIER '(' expression ')' |
-	IDENTIFIER ;
+arithmetic_operator:
+    ADDOP | MULOP | MODOP | EXPOP ;
+
 
 %%
 

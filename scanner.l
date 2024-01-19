@@ -32,7 +32,7 @@ real     [0-9]*\.[0-9]+([Ee][+-]?[0-9]+)?
 "+"      { ECHO; return(ADDOP); }
 "-"        { ECHO; return(ADDOP); }
 "/"        { ECHO; return(MULOP); }
-"%"        { ECHO; return(REMOP); }
+"%"        { ECHO; return(MODOP); }
 "^"        { ECHO; return(EXPOP); }
 "~"        { ECHO; return(NEGOP); }
 "*"      { ECHO; return(MULOP); }
